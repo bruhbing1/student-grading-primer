@@ -393,7 +393,7 @@ def test_delete_student_updates_stats():
 
     check(
         stats_with["count"] == expected_count_with,
-        f"/stats count after create {stats_with['count']} does not match expected {expected_count_with}",
+        f"/1stats count after create {stats_with['count']} does not match expected {expected_count_with}",
     )
     check(
         stats_with["min"] == expected_min_with,
@@ -431,7 +431,7 @@ def test_delete_student_updates_stats():
 
         check(
             stats_after["count"] == expected_count_after,
-            f"/stats count after delete {stats_after['count']} does not match expected {expected_count_after}",
+            f"/2stats count after delete {stats_after['count']} does not match expected {expected_count_after}",
         )
         check(
             stats_after["min"] == expected_min_after,
