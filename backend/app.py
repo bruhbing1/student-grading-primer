@@ -67,8 +67,11 @@ def delete_student(student_id):
     Route to delete student by id
     return: The deleted student
     """
-
+    allStudents = db.get_all_students()
+   
     ret = db.delete_student(student_id)
+    allStudents = db.get_all_students()
+
     if ret is None:
         return jsonify({"error": "Not found"}), 404
     return jsonify(ret), 200
@@ -82,7 +85,7 @@ def get_stats():
     return: An object with the stats (count, average, min, max)
     """
     allStudents = db.get_all_students()
-    print(allStudents)
+
     if len(allStudents) == 0:
         return jsonify({
             'count': 0,
@@ -90,15 +93,16 @@ def get_stats():
             'min': 0,
             'max': 0
         }), 200
-  
+    totalStudents = len(allStudents)
     minMark = math.inf
     maxMark = 0
     totalMark = 0
-    print(allStudents, flush=True)
+
     for i in allStudents:
 
         mark = i.get('mark')
         if mark is None:
+            totalStudents -= 1
             continue
         totalMark += mark
 
@@ -106,9 +110,16 @@ def get_stats():
             maxMark = mark
         if mark < minMark:
             minMark = mark
-    average = totalMark / len(allStudents)
+    if totalStudents == 0:
+        return jsonify({
+            'count': 0,
+            'average': 0,
+            'min': 0,
+            'max': 0
+        }), 200
+    average = totalMark / totalStudents
 
-    return jsonify({'count': len(allStudents), 'average': average, 'min': minMark, 'max': maxMark}), 200
+    return jsonify({'count': totalStudents, 'average': average, 'min': minMark, 'max': maxMark}), 200
 
 
 
