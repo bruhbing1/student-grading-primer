@@ -69,6 +69,7 @@ export default function App() {
       </header>
 
       <main className="main">
+        <Stats />
         <section className="card form-card">
           <h2>Add Students</h2>
           <StudentForm onSubmit={handleCreate} />
