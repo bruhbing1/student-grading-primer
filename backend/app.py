@@ -35,12 +35,18 @@ def create_student():
 
     # Getting the request body - replace with your implementation
     student_data = request.json
+    if not student_data:
+        return jsonify({"error": "blank student submitted"}), 400
+    
+    if not student_data.get('name') or not student_data.get('course'):
+        return jsonify({"error": "Missing required fields: name, course are all required"}), 400
+    
     ret = db.insert_student(student_data.get('name'), student_data.get('course'), student_data.get('mark'))
 
     if ret:
         return jsonify(ret), 200
 
-    return jsonify({"error": "Not found"}), 500
+    return jsonify({"error": "Could not create"}), 500
 
 
 @app.route("/students/<int:student_id>", methods=["PUT"])
